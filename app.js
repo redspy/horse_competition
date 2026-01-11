@@ -243,9 +243,16 @@ function gameTick() {
 
         // Adjusted for 120 ticks target
         // Goal ~90% distance. 120 ticks -> ~0.73 per tick.
-        // Random 1~3 (avg 2). So base should be ~0.37.
-        const baseUnit = 0.37;
-        const randomStep = Math.floor(Math.random() * 3) + 1; // 1, 2, 3
+        // Random 1~5 (avg 3). So base should be ~0.25 to keep similar duration?
+        // User asked for "more dynamic". Faster is okay.
+        // Let's keep base unit similar or slightly lower if it gets too fast.
+        // Old avg: 2 * 0.37 = 0.74
+        // New avg: 3 * 0.37 = 1.11 -> Race ends in ~80 ticks (12 sec).
+        // Let's slightly reduce baseUnit to keep it around 15-18 sec?
+        // 88 / 120 = 0.73. New Avg Step is 3.
+        // 0.73 / 3 = 0.24.
+        const baseUnit = 0.25;
+        const randomStep = Math.floor(Math.random() * 5) + 1; // 1, 2, 3, 4, 5
         let moveAmount = randomStep * baseUnit; // 0.37 ~ 1.11 %
 
         // 3. Catch-up Logic

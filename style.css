@@ -45,8 +45,9 @@ body {
     perspective: 1000px;
     /* For 3D effects */
     /* Move background here to ensure consistency and prevent tiling issues on resize/modal */
-    background: url('assets/track_bg.png') no-repeat center center fixed;
-    background-size: cover;
+    /* background: url('assets/track_bg.png') no-repeat center center fixed; */
+    /* background-size: cover; */
+    /* Restore gradient by not overriding it */
 }
 
 .screen {
@@ -260,12 +261,10 @@ body {
 /* Game Screen */
 #game-screen {
     justify-content: flex-start;
-    /* Background handled by body now or specific container 
-       Let's keep it transparent here so body bg shows through? 
-       Actually, body bg is gradient. We want track only on game screen.
-       
-       Revert body change idea. Let's make a dedicated fixed background div.
-    */
+
+    /* Apply track background only here, fixed to screen */
+    background: url('assets/track_bg.png') no-repeat left center fixed;
+    background-size: auto 100%;
 }
 
 /* We will overlay the track image on individual lanes or the whole container 
@@ -546,7 +545,9 @@ body {
     color: var(--primary-color);
     border-bottom: 3px solid var(--primary-color);
 }
-/* Hotfix for background glitch */
-.track-container { background: none !important; }
 
-.paused { animation-play-state: paused !important; }
+/* Hotfix removed */
+
+.paused {
+    animation-play-state: paused !important;
+}
