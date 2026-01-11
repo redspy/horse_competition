@@ -1,0 +1,379 @@
+:root {
+    --primary-color: #ff6b6b;
+    --secondary-color: #4ecdc4;
+    --bg-color: #f7f9fc;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+
+    /* Rainbow Colors */
+    --color-red: #FF5252;
+    --color-orange: #FF9800;
+    --color-yellow: #FFEB3B;
+    --color-green: #4CAF50;
+    --color-blue: #2196F3;
+    --color-indigo: #3F51B5;
+    --color-purple: #9C27B0;
+
+    --lane-height: 80px;
+    --horse-size: 64px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    font-family: 'Jua', sans-serif;
+    background-color: var(--bg-color);
+    background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.5s ease;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+    display: none !important;
+    /* Force hide */
+}
+
+/* Setup Screen */
+.game-title {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    color: #333;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-20px);
+    }
+
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+.setup-container {
+    background: var(--glass-bg);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.setting-group {
+    margin-bottom: 2rem;
+}
+
+.setting-group label {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #555;
+}
+
+.horse-count-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.control-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--secondary-color);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.control-btn:active {
+    transform: scale(0.9);
+}
+
+#horse-color-settings {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.color-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.color-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.color-circle:hover {
+    transform: scale(1.1);
+}
+
+.color-circle.selected {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 3px #333;
+}
+
+.primary-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Jua', sans-serif;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+}
+
+.primary-btn:active {
+    transform: translateY(1px);
+}
+
+/* Game Screen */
+#game-screen {
+    justify-content: flex-start;
+    background: url('assets/track_bg.png');
+    /* Fallback/Blend */
+    background-size: cover;
+    background-repeat: repeat-x;
+    /* Repeat horizontally if needed */
+}
+
+/* We will overlay the track image on individual lanes or the whole container 
+   For better endless scrolling look, we might want to repeat the bg on the container.
+*/
+.track-container {
+    width: 100%;
+    height: 80vh;
+    margin-top: 2rem;
+    position: relative;
+    overflow-x: auto;
+    /* Allow horizontal scroll if track is long? Or fixed screen? 
+                         User said "straight line", usually fixed on screen or camera follows.
+                         Let's keep it fixed width for simplicity or make horses move across screen. */
+    overflow-y: hidden;
+    background: url('assets/track_bg.png');
+    background-size: auto 100%;
+    /* Cover height */
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+#track-lanes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 1rem 0;
+}
+
+.lane {
+    height: var(--lane-height);
+    width: 100%;
+    border-bottom: 2px dashed rgba(255, 255, 255, 0.4);
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.lane:last-child {
+    border-bottom: none;
+}
+
+.horse-wrapper {
+    position: absolute;
+    left: 20px;
+    /* Start position */
+    bottom: 5px;
+    width: var(--horse-size);
+    height: var(--horse-size);
+    transition: left 0.5s linear;
+    /* Smooth movement between ticks */
+    z-index: 10;
+}
+
+.horse-sprite {
+    width: 100%;
+    height: 100%;
+    background-size: 600% 100%;
+    /* 6 frames horizontally */
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    animation: horse-run 0.6s steps(5) infinite;
+    /* steps(5) for 6 frames 0% to 100% */
+}
+
+@keyframes horse-run {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+.start-line,
+.finish-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    z-index: 5;
+}
+
+.start-line {
+    left: 80px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.finish-line {
+    right: 50px;
+    width: 40px;
+    background-image: linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),
+        linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
+    background-position: 0 0, 20px 20px;
+    background-size: 40px 40px;
+    background-color: white;
+    border: 2px solid white;
+}
+
+.header-bar {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.secondary-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid white;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+#race-status {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem;
+    color: white;
+    text-shadow: 4px 4px 0 #000;
+    pointer-events: none;
+    z-index: 100;
+    display: none;
+}
+
+/* Result Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    text-align: center;
+    min-width: 400px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border: 5px solid var(--secondary-color);
+}
+
+#result-list {
+    list-style: none;
+    margin: 2rem 0;
+    text-align: left;
+}
+
+#result-list li {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+}
+
+#result-list li:first-child {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+}
