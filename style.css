@@ -44,6 +44,9 @@ body {
     align-items: center;
     perspective: 1000px;
     /* For 3D effects */
+    /* Move background here to ensure consistency and prevent tiling issues on resize/modal */
+    background: url('assets/track_bg.png') no-repeat center center fixed;
+    background-size: cover;
 }
 
 .screen {
@@ -257,11 +260,12 @@ body {
 /* Game Screen */
 #game-screen {
     justify-content: flex-start;
-    background: url('assets/track_bg.png');
-    /* Fallback/Blend */
-    background-size: cover;
-    background-repeat: repeat-x;
-    /* Repeat horizontally if needed */
+    /* Background handled by body now or specific container 
+       Let's keep it transparent here so body bg shows through? 
+       Actually, body bg is gradient. We want track only on game screen.
+       
+       Revert body change idea. Let's make a dedicated fixed background div.
+    */
 }
 
 /* We will overlay the track image on individual lanes or the whole container 
@@ -278,8 +282,6 @@ body {
                          Let's keep it fixed width for simplicity or make horses move across screen. */
     overflow-y: hidden;
     /* Prevent scrolling */
-    background: url('assets/track_bg.png');
-    background-size: auto 100%;
     /* Cover height */
 }
 
@@ -544,3 +546,5 @@ body {
     color: var(--primary-color);
     border-bottom: 3px solid var(--primary-color);
 }
+/* Hotfix for background glitch */
+.track-container { background: none !important; }

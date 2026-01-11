@@ -18,6 +18,13 @@ This document outlines the features and verification of the Horse Racing Game, s
 - **Race Duration**: Tuned to approx. 120 ticks (18 seconds) for a faster paced game.
 - **End Condition**: Race ends immediately when the first horse crosses the finish line. Remaining horses are ranked by their current position.
 
+### Bug Fixes
+- **Visual Glitch**: Fixed an issue where the background would tile incorrectly after the race finished.
+  ![Broken Layout](file:///C:/Users/SODA/.gemini/antigravity/brain/85a886de-3ce0-4492-8bcf-e350db647d41/broken_layout_after_race_1768141736717.png)
+  _Screenshot of the reported issue before fix._
+  
+  The fix involved locking the background to the `body` and removing it from the track container.
+
 ### Visual Effects
 - **Race Screen**:
   - Validated smooth lane transitions and finish line checkered flag pattern.
