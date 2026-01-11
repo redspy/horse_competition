@@ -241,11 +241,12 @@ function gameTick() {
         // 80 / 30 = 2.6% per tick avg.
         // So 1 unit = 2%. Base move = 2% * (1~3) = 2%~6%.
 
-        // Adjusted for 150ms tick and longer race (~100-150 ticks)
-        // Goal ~90%. 150 ticks -> ~0.6 per tick.
-        const baseUnit = 0.3; // Much smaller step
+        // Adjusted for 120 ticks target
+        // Goal ~90% distance. 120 ticks -> ~0.73 per tick.
+        // Random 1~3 (avg 2). So base should be ~0.37.
+        const baseUnit = 0.37;
         const randomStep = Math.floor(Math.random() * 3) + 1; // 1, 2, 3
-        let moveAmount = randomStep * baseUnit; // 0.3 ~ 0.9 %
+        let moveAmount = randomStep * baseUnit; // 0.37 ~ 1.11 %
 
         // 3. Catch-up Logic
         // "순위가 낮을수록 많은 틱이 만들어질 확률을 높이는"

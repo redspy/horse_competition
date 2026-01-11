@@ -10,6 +10,13 @@ This document outlines the features and verification of the Horse Racing Game, s
   - Interactive color selection circles with hover and selection states.
   - "Start" button with gradient background and hover lift effect.
 
+### Horse Sizing & Layout
+- **Horse Sizing**: Increased vertical size by 3x (192px) and adjusted width (96px).
+- **Layout Fix**: Removed vertical scrolling. Lanes now distribute available screen height equally (`flex: 1`). Large horses overflow their lanes (`overflow: visible`) for a dynamic visual.
+
+### Performance
+- **Race Duration**: Tuned to approx. 120 ticks (18 seconds) for a faster paced game.
+
 ### Visual Effects
 - **Race Screen**:
   - Validated smooth lane transitions and finish line checkered flag pattern.

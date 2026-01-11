@@ -17,11 +17,14 @@
     --color-indigo: #3742fa;
     --color-purple: #8e44ad;
 
-    --lane-height: 140px;
-    /* Adjusted for 2x height */
-    --horse-width: 64px;
-    --horse-height: 128px;
-    /* 64px * 2 */
+    --lane-height: 220px;
+    /* Adjusted for 3x height */
+    --horse-width: 96px;
+    /* 64px * 1.5 to maintain aspect ratio with 3x height? 
+       Or maybe they want 3x width too? Let's stick to 3x vertical scale of base (64*3=192).
+       Current was 64x128 (1:2). Target 192 height. To keep 1:2, width should be 96. */
+    --horse-height: 192px;
+    /* 64px * 3 */
 }
 
 * {
@@ -274,6 +277,7 @@ body {
                          User said "straight line", usually fixed on screen or camera follows.
                          Let's keep it fixed width for simplicity or make horses move across screen. */
     overflow-y: hidden;
+    /* Prevent scrolling */
     background: url('assets/track_bg.png');
     background-size: auto 100%;
     /* Cover height */
@@ -282,18 +286,23 @@ body {
 #track-lanes {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    /* Distribute lanes evenly */
     height: 100%;
+    /* Force full height */
     padding: 1rem 0;
 }
 
 .lane {
-    height: var(--lane-height);
+    flex: 1;
+    /* Take equal available space */
     width: 100%;
     border-bottom: 2px dashed rgba(255, 255, 255, 0.4);
     position: relative;
     display: flex;
     align-items: center;
+    /* Do NOT hide overflow so large horses can stick out */
+    overflow: visible;
 }
 
 .lane:last-child {
