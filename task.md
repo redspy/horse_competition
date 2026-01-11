@@ -25,7 +25,10 @@
     - [x] [전체 틱 수 120으로 조정](app.js) <!-- id: 24 -->
     - [x] [세로 스크롤 방지 및 말 배치 수정](style.css) <!-- id: 25 -->
     - [x] [1등 도착 시 경기 즉시 종료 구현](app.js) <!-- id: 26 -->
-- [ ] 버그 수정 <!-- id: 27 -->
+- [x] 버그 수정 <!-- id: 27 -->
     - [x] [경기 종료 후 화면 깨짐 현상 수정](style.css) <!-- id: 28 -->
+- [x] 최종 수정 및 현지화 <!-- id: 29 -->
+    - [x] [경기 종료 시 말 애니메이션 정지 (화면 유지)](app.js) <!-- id: 30 -->
+    - [x] [모든 문서 한글화 (task.md, implementation_plan.md, walkthrough.md)](walkthrough.md) <!-- id: 31 -->
 - [x] 검증 <!-- id: 19 -->
     - [x] [기능 테스트 및 워크스루 작성 (walkthrough.md)](walkthrough.md) <!-- id: 20 -->

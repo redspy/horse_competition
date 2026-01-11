@@ -548,3 +548,5 @@ body {
 }
 /* Hotfix for background glitch */
 .track-container { background: none !important; }
+
+.paused { animation-play-state: paused !important; }

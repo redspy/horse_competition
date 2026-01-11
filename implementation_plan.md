@@ -1,47 +1,25 @@
-# Styling and Polishing Plan
+# 구현 계획서: 최종 폴리싱 및 한글화
 
-The goal is to elevate the visual quality of the Horse Racing Game to a premium, modern standard, adding dynamic animations and refined UI elements.
+## 목표
+경기 종료 시 말들의 애니메이션을 멈춰 결과를 시각적으로 유지하고, 프로젝트의 모든 문서를 한글로 변환하여 국내 사용자에게 친화적인 결과물을 제공합니다.
 
-## User Review Required
-> [!NOTE]
-> No breaking changes to the logic. This is purely visual and UX enhancement.
+## 변경 사항
 
-## Proposed Changes
+### 게임 로직 (app.js)
+#### [수정] [app.js](file:///c:/Users/SODA/Documents/Source/horse_competition/app.js)
+- **경기 종료 처리**:
+  - 1등 말이 결승선을 통과하는 즉시(`finishedCount >= 1`) `STATE.isRacing`을 `false`로 설정.
+  - 모든 말 엘리먼트(`.horse-sprite`)에 CSS 클래스 `paused`를 추가하여 달리기 동작을 정지.
 
-### UI/UX Enhancements (style.css, index.html)
-#### [MODIFY] [style.css](file:///c:/Users/SODA/Documents/Source/horse_competition/style.css)
-- **Start Screen**:
-  - Enhance Title typography with a gradient or 3D effect.
-  - Add hover animations to the "Start" and control buttons (scale, glow).
-  - Improve the "Horse Color Selection" UI to look more interactive (e.g., selection rings, tooltips).
-- **Race Screen**:
-  - Add texture or better styling to the lanes (grass/dirt contrast?).
-  - Enhance the "Finish Line" visual (checkered flag banner).
-  - Add a "Camera Flash" or "Dust" effect using CSS animations for running horses.
-  - Improve the "Race Status" countdown timer styling.
-- **Result Modal**:
-  - Add a "Winner Spotlight" effect.
-  - Style the ranking list with medals or trophies symbols.
-  - Add a simple CSS-based confetti or celebration animation.
+### 스타일 (style.css)
+#### [수정] [style.css](file:///c:/Users/SODA/Documents/Source/horse_competition/style.css)
+- **.paused 클래스**:
+  - `animation-play-state: paused !important;`를 추가하여 스프라이트 애니메이션을 멈춤.
 
-### Visual Polish
-- **Transitions**: Ensure smooth transitions between screens (`opacity`, `transform`).
-- **Responsive Tweaks**: Ensure it looks good on different aspect ratios if possible.
+### 문서화
+- `task.md`, `implementation_plan.md`, `walkthrough.md` 전체 한글 번역.
 
-## Verification Plan
-
-### Manual Verification
-1. **Start Screen**:
-   - Hover over all buttons to verify animations.
-   - Click color selectors and verify visual feedback.
-2. **Race**:
-   - Run a race and observe the visual fluidity.
-   - Verify the "dust" or running effects (if implemented).
-   - Check the Finish Line appearance.
-3. **Results**:
-   - Finish a race and check the Result Modal.
-   - Verify the winners are clearly highlighted.
-   - Check for any layout shifts.
-
-### Automated Tests
-- None (Visual changes primarily tested manually via Browser Walkthrough).
+## 검증 계획
+1. 게임 실행 후 1등 말이 도착하면 모든 말의 다리 움직임이 멈추는지 확인.
+2. 결과 창 뒤로 멈춰있는 말들이 배경과 함께 잘 보이는지 확인.
+3. 모든 문서(`.md`)가 자연스러운 한국어로 작성되었는지 확인.

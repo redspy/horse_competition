@@ -1,58 +1,56 @@
-# Horse Racing Game Walkthrough
+# 경마 게임 프로젝트 워크스루
 
-This document outlines the features and verification of the Horse Racing Game, specifically focusing on the recent styling and polishing updates.
+이 문서는 경마 게임의 주요 개발 내용과 변경 사항, 그리고 검증 결과를 정리한 문서입니다. 특히 최신의 UI 개선 사항과 로직 변경 점을 중점적으로 다룹니다.
 
-## New Features
-### Premium UI Design
-- **Start Screen**:
-  - Validated the new "Glassmorphism" effect on the setup container.
-  - Verified the 3D title typography with gradient and bounce animation.
-  - Interactive color selection circles with hover and selection states.
-  - "Start" button with gradient background and hover lift effect.
+## 주요 기능 및 스크린샷
 
-### Horse Sizing & Layout
-- **Horse Sizing**: Increased vertical size by 3x (192px) and adjusted width (96px).
-- **Layout Fix**: Removed vertical scrolling. Lanes now distribute available screen height equally (`flex: 1`). Large horses overflow their lanes (`overflow: visible`) for a dynamic visual.
+### 프리미엄 UI 디자인
+- **시작 화면**:
+  - "글래스모피즘(Glassmorphism)" 효과가 적용된 설정 창.
+  - 그라데이션과 바운스 애니메이션이 적용된 3D 타이틀 텍스트.
+  - 마우스 오버 및 선택 효과가 있는 인터랙티브 색상 선택 원형 버튼.
+  - 호버 시 떠오르는 효과가 적용된 "경기 시작" 버튼.
 
-### Performance
-- **Race Duration**: Tuned to approx. 120 ticks (18 seconds) for a faster paced game.
-- **End Condition**: Race ends immediately when the first horse crosses the finish line. Remaining horses are ranked by their current position.
+### 비주얼 이펙트
+- **경기 화면**:
+  - 부드러운 레인 전환과 체크 무늬 결승선 패턴.
+  - 카운트다운 애니메이션 (3 -> 2 -> 1 -> START!)과 팝인(Pop-in) 효과.
+- **결과 화면**:
+  - 결과 모달이 아래에서 위로 부드럽게 올라오는 스포트라이트 효과.
+  - `#confetti-container`를 이용한 CSS 컨페티(꽃가루) 애니메이션.
 
-### Bug Fixes
-- **Visual Glitch**: Fixed an issue where the background would tile incorrectly after the race finished.
-  ![Broken Layout](file:///C:/Users/SODA/.gemini/antigravity/brain/85a886de-3ce0-4492-8bcf-e350db647d41/broken_layout_after_race_1768141736717.png)
-  _Screenshot of the reported issue before fix._
-  
-  The fix involved locking the background to the `body` and removing it from the track container.
+### 말 크기 및 레이아웃 조정
+- **말 크기**: 세로 크기를 3배(192px)로 키우고 가로폭(96px)을 비율에 맞게 조정하여 시인성 확보.
+- **레이아웃 수정**: 세로 스크롤을 제거하고, 화면 높이에 맞춰 레인이 균등하게 배치되도록 `flex: 1` 적용. 큰 말들이 레인을 넘나드는 역동적인 연출 (`overflow: visible`).
 
-### Visual Effects
-- **Race Screen**:
-  - Validated smooth lane transitions and finish line checkered flag pattern.
-  - Countdown animation updates (3 -> 2 -> 1 -> START!) with a pop-in effect for each number.
-- **Results**:
-  - "Winner Spotlight" effect on the result modal.
-  - Confetti rain animation via CSS in the `#confetti-container`.
+### 성능 및 로직 튜닝
+- **경기 속도**: 전체 경주 틱 수를 약 120틱 (약 18초)으로 조정하여 더욱 박진감 넘치는 속도감 구현.
+- **종료 조건**: 1등 말이 결승선을 통과하는 즉시 경기가 종료되며, 나머지 말들은 현재 위치를 기준으로 순위가 산정됨.
 
-## Verification Checklist
+### 버그 수정
+- **화면 깨짐 수정**: 경기 종료 후 배경 이미지가 반복되거나 깨지는 현상을 수정 (배경을 `body`에 고정하고 트랙 컨테이너에서 제거).
+  ![깨진 레이아웃 스크린샷](file:///C:/Users/SODA/.gemini/antigravity/brain/85a886de-3ce0-4492-8bcf-e350db647d41/broken_layout_after_race_1768141736717.png)
+  _수정 전 발생했던 화면 깨짐 현상_
 
-### Manual Verification
-- [x] **Start Screen Interaction**:
-    - Hover over the Setup card -> It tilts slightly (3D effect).
-    - Hover over color circles -> They scale up.
-    - Click color circles -> Selection ring pulses.
-- [x] **Race Flow**:
-    - Click "Start" -> Game switches to Race Screen smoothly.
-    - Countdown numbers (3, 2, 1) pop in individually.
-    - Horses move with `step` animation.
-- [x] **Game Over**:
-    - Result modal slides up from the bottom.
-    - Confetti falls in the background of the modal.
-    - "Restart" button works and resets the game state correctly.
+## 검증 체크리스트
 
-### Code Integrity
-- All CSS variables are defined in `:root`.
-- Animations (`bounce`, `popIn`, `slideUp`, `confettiFall`) are correctly Keyframed.
-- JavaScript correctly resets the countdown animation by triggering reflow.
+### 수동 검증
+- [x] **시작 화면 상호작용**:
+    - 설정 카드 호버 시 3D 틸트 효과 확인.
+    - 색상 원형 버튼 호버 및 클릭 시 반응 확인.
+- [x] **경기 진행**:
+    - "경기 시작" 클릭 시 화면 전환 부드러움 확인.
+    - 카운트다운(3, 2, 1) 애니메이션 정상 작동 확인.
+    - 말들이 `step` 애니메이션으로 달리는 동작 확인.
+- [x] **경기 종료 및 결과**:
+    - 1등 도착 시 모든 말 애니메이션 정지 (New).
+    - 결과 모달 슬라이드 업 및 컨페티 효과 확인.
+    - "다시 하기" 버튼 클릭 시 상태 초기화 정상 작동 확인.
 
-## Usage
-Open `index.html` in a modern web browser to play the game.
+### 코드 무결성
+- 모든 CSS 변수는 `:root`에 정의되어 관리됨.
+- 주요 애니메이션(`bounce`, `popIn`, `slideUp`, `confettiFall`)이 키프레임으로 구현됨.
+- 자바스크립트 로직이 상태(STATE) 기반으로 안전하게 관리됨.
+
+## 실행 방법
+`index.html` 파일을 최신 웹 브라우저(Chrome, Edge 등)에서 열어 게임을 실행하세요.

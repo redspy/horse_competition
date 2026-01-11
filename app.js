@@ -282,10 +282,9 @@ function gameTick() {
         clearInterval(STATE.timerId);
         STATE.isRacing = false;
 
-        // Stop all animations immediately
-        STATE.horses.forEach(h => {
-            const sprite = h.element.querySelector('.horse-sprite');
-            if (sprite) sprite.style.animationPlayState = 'paused';
+        // Stop animations
+        document.querySelectorAll('.horse-sprite').forEach(el => {
+            el.classList.add('paused');
         });
 
         setTimeout(showResults, 1000); // Wait a bit
