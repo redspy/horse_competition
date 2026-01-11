@@ -27,8 +27,9 @@
     - [x] [1등 도착 시 경기 즉시 종료 구현](app.js) <!-- id: 26 -->
 - [x] 버그 수정 <!-- id: 27 -->
     - [x] [경기 종료 후 화면 깨짐 현상 수정](style.css) <!-- id: 28 -->
-    - [x] [배경 그래픽 글리치 및 시작 화면 배경 복구](style.css) 
+    - [x] [배경 그래픽 개선 (::before 가상 요소 사용)](style.css)
 - [x] 최종 수정 및 현지화 <!-- id: 29 -->
+    - [x] [정밀 피니시 로직 구현 (getBoundingClientRect)](app.js)
     - [x] [이동 범위 1~5로 변경 (다이내믹 업데이트)](app.js)
     - [x] [경기 종료 시 말 애니메이션 정지 (화면 유지)](app.js) <!-- id: 30 -->
     - [x] [모든 문서 한글화 (task.md, implementation_plan.md, walkthrough.md)](walkthrough.md) <!-- id: 31 -->

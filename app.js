@@ -273,14 +273,18 @@ function gameTick() {
         // Render
         horse.element.style.left = `min(${horse.position}%, calc(100% - 64px))`;
 
-        // Check Finish
-        // Finish line is at right side. Let's say 90%.
-        if (horse.position >= 88 && !horse.finished) {
-            horse.finished = true;
-            STATE.finishedCount++;
-            horse.rank = STATE.finishedCount;
-            // Visual effect
-            // horse.element.querySelector('.horse-sprite').style.filter = 'brightness(1.5)';
+        // Check Finish (Precise Collision Detection)
+        const finishLine = document.querySelector('.finish-line');
+        if (finishLine && !horse.finished) {
+            const horseRect = horse.element.getBoundingClientRect();
+            const finishRect = finishLine.getBoundingClientRect();
+
+            // If horse's right edge touches finish line's left edge
+            if (horseRect.right >= finishRect.left) {
+                horse.finished = true;
+                STATE.finishedCount++;
+                horse.rank = STATE.finishedCount;
+            }
         }
     });
 

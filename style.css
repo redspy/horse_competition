@@ -261,10 +261,21 @@ body {
 /* Game Screen */
 #game-screen {
     justify-content: flex-start;
+    position: relative;
+    overflow: hidden;
+    /* Ensure pseudo-element stays within bounds */
+}
 
-    /* Apply track background only here, fixed to screen */
-    background: url('assets/track_bg.png') no-repeat left center fixed;
-    background-size: auto 100%;
+#game-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('assets/track_bg.png') no-repeat center center;
+    background-size: cover;
+    z-index: -1;
 }
 
 /* We will overlay the track image on individual lanes or the whole container 
