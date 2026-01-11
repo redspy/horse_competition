@@ -116,16 +116,25 @@ function startGame() {
     renderTrack();
 
     // Countdown
-    els.raceStatus.style.display = 'block';
-    els.raceStatus.textContent = '3';
-
     let count = 3;
+
+    // Helper to trigger animation
+    const animateCount = (text) => {
+        els.raceStatus.textContent = text;
+        els.raceStatus.style.display = 'none';
+        els.raceStatus.offsetHeight; // trigger reflow
+        els.raceStatus.style.display = 'block';
+    };
+
+    els.raceStatus.style.display = 'block'; // Ensure visible first
+    animateCount('3');
+
     const countTimer = setInterval(() => {
         count--;
         if (count > 0) {
-            els.raceStatus.textContent = count;
+            animateCount(count);
         } else if (count === 0) {
-            els.raceStatus.textContent = 'START!';
+            animateCount('START!');
         } else {
             clearInterval(countTimer);
             els.raceStatus.style.display = 'none';
@@ -190,7 +199,6 @@ function renderTrack() {
             <div class="horse-sprite" 
                  style="background-image: url('${horse.color.image}');">
             </div>
-            <div style="position:absolute; top:-20px; left:0; right:0; text-align:center; font-weight:bold; color:#333; font-size:12px;">${horse.id + 1}번</div>
         `;
 
         lane.appendChild(horseWrap);
@@ -202,7 +210,7 @@ function renderTrack() {
 
 function startRaceLoop() {
     STATE.startTime = Date.now();
-    STATE.timerId = setInterval(gameTick, 500); // 0.5s tick
+    STATE.timerId = setInterval(gameTick, 150); // 150ms tick (faster updates, smoother)
 }
 
 function gameTick() {
@@ -233,9 +241,11 @@ function gameTick() {
         // 80 / 30 = 2.6% per tick avg.
         // So 1 unit = 2%. Base move = 2% * (1~3) = 2%~6%.
 
-        const baseUnit = 2; // %
+        // Adjusted for 150ms tick and longer race (~100-150 ticks)
+        // Goal ~90%. 150 ticks -> ~0.6 per tick.
+        const baseUnit = 0.3; // Much smaller step
         const randomStep = Math.floor(Math.random() * 3) + 1; // 1, 2, 3
-        let moveAmount = randomStep * baseUnit;
+        let moveAmount = randomStep * baseUnit; // 0.3 ~ 0.9 %
 
         // 3. Catch-up Logic
         // "순위가 낮을수록 많은 틱이 만들어질 확률을 높이는"
@@ -270,6 +280,13 @@ function gameTick() {
     if (STATE.finishedCount >= STATE.horseCount) {
         clearInterval(STATE.timerId);
         STATE.isRacing = false;
+
+        // Stop all animations immediately
+        STATE.horses.forEach(h => {
+            const sprite = h.element.querySelector('.horse-sprite');
+            if (sprite) sprite.style.animationPlayState = 'paused';
+        });
+
         setTimeout(showResults, 1000); // Wait a bit
     }
 }

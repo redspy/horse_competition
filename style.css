@@ -1,22 +1,27 @@
 :root {
-    --primary-color: #ff6b6b;
-    --secondary-color: #4ecdc4;
-    --bg-color: #f7f9fc;
-    --glass-bg: rgba(255, 255, 255, 0.85);
+    --primary-color: #ff4757;
+    --secondary-color: #2ed573;
+    --accent-color: #ffa502;
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --glass-bg: rgba(255, 255, 255, 0.9);
     --glass-border: rgba(255, 255, 255, 0.5);
-    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    --shadow-strong: 0 10px 50px rgba(0, 0, 0, 0.2);
 
-    /* Rainbow Colors */
-    --color-red: #FF5252;
-    --color-orange: #FF9800;
-    --color-yellow: #FFEB3B;
-    --color-green: #4CAF50;
-    --color-blue: #2196F3;
-    --color-indigo: #3F51B5;
-    --color-purple: #9C27B0;
+    /* Rainbow Colors (Vibrant) */
+    --color-red: #ff4757;
+    --color-orange: #ffa502;
+    --color-yellow: #eccc68;
+    --color-green: #2ed573;
+    --color-blue: #1e90ff;
+    --color-indigo: #3742fa;
+    --color-purple: #8e44ad;
 
-    --lane-height: 80px;
-    --horse-size: 64px;
+    --lane-height: 140px;
+    /* Adjusted for 2x height */
+    --horse-width: 64px;
+    --horse-height: 128px;
+    /* 64px * 2 */
 }
 
 * {
@@ -28,13 +33,14 @@
 
 body {
     font-family: 'Jua', sans-serif;
-    background-color: var(--bg-color);
-    background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-image: var(--bg-gradient);
     height: 100vh;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+    perspective: 1000px;
+    /* For 3D effects */
 }
 
 .screen {
@@ -60,11 +66,24 @@ body {
 
 /* Setup Screen */
 .game-title {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     margin-bottom: 2rem;
-    color: #333;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    animation: bounce 2s infinite;
+    color: #2f3542;
+    text-shadow:
+        3px 3px 0px #fff,
+        6px 6px 0px rgba(0, 0, 0, 0.1);
+    animation: bounce 2s infinite ease-in-out;
+    background: linear-gradient(45deg, var(--color-red), var(--color-orange), var(--color-yellow), var(--color-green), var(--color-blue), var(--color-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    /* Fallback handled by text-shadow overriding this? No, gradient needs transparent */
+    /* Wait, text-shadow puts shadow behind. If color is transparent, we see bg. 
+       Let's use a stroke effect or just simple gradient text without shadow interfering too much.
+       Or just color it normally with the gradient. */
+    text-shadow: none;
+    /* Reset shadow for gradient text */
+    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.1));
 }
 
 @keyframes bounce {
@@ -88,14 +107,19 @@ body {
 
 .setup-container {
     background: var(--glass-bg);
-    padding: 2.5rem;
-    border-radius: 20px;
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--glass-border);
+    padding: 3rem;
+    border-radius: 30px;
+    box-shadow: var(--shadow-strong), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
     width: 90%;
     max-width: 600px;
     text-align: center;
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
+}
+
+.setup-container:hover {
+    transform: translateY(-5px) rotateX(2deg);
 }
 
 .setting-group {
@@ -119,20 +143,37 @@ body {
 }
 
 .control-btn {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     border: none;
     background: var(--secondary-color);
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
-    transition: transform 0.1s;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    /* Centering fix */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 0 #218c74;
+    /* 3D effect */
+    margin-bottom: 4px;
+    /* compensate for shadow */
 }
 
 .control-btn:active {
-    transform: scale(0.9);
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #218c74;
 }
+
+.control-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #218c74;
+}
+
+
 
 #horse-color-settings {
     display: flex;
@@ -150,44 +191,64 @@ body {
 }
 
 .color-circle {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     border: 3px solid white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
 }
 
 .color-circle:hover {
-    transform: scale(1.1);
+    transform: scale(1.15) rotate(10deg);
 }
 
 .color-circle.selected {
     transform: scale(1.2);
-    box-shadow: 0 0 0 3px #333;
+    border-color: #333;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
 }
 
 .primary-btn {
-    background: var(--primary-color);
+    background: linear-gradient(to bottom, var(--primary-color), #eb2f06);
+    ;
     color: white;
     border: none;
-    padding: 1rem 3rem;
-    font-size: 1.5rem;
+    padding: 1.2rem 3.5rem;
+    font-size: 1.8rem;
     border-radius: 50px;
     cursor: pointer;
     font-family: 'Jua', sans-serif;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 10px 20px rgba(255, 71, 87, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .primary-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(255, 71, 87, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3);
 }
 
 .primary-btn:active {
-    transform: translateY(1px);
+    transform: translateY(2px);
+    box-shadow: 0 5px 10px rgba(255, 71, 87, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.3);
 }
 
 /* Game Screen */
@@ -216,7 +277,6 @@ body {
     background: url('assets/track_bg.png');
     background-size: auto 100%;
     /* Cover height */
-    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
 }
 
 #track-lanes {
@@ -243,12 +303,10 @@ body {
 .horse-wrapper {
     position: absolute;
     left: 20px;
-    /* Start position */
     bottom: 5px;
-    width: var(--horse-size);
-    height: var(--horse-size);
+    width: var(--horse-width);
+    height: var(--horse-height);
     transition: left 0.5s linear;
-    /* Smooth movement between ticks */
     z-index: 10;
 }
 
@@ -260,7 +318,6 @@ body {
     background-repeat: no-repeat;
     image-rendering: pixelated;
     animation: horse-run 0.6s steps(5) infinite;
-    /* steps(5) for 6 frames 0% to 100% */
 }
 
 @keyframes horse-run {
@@ -288,14 +345,40 @@ body {
 }
 
 .finish-line {
-    right: 50px;
-    width: 40px;
-    background-image: linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),
-        linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
-    background-position: 0 0, 20px 20px;
-    background-size: 40px 40px;
-    background-color: white;
-    border: 2px solid white;
+    right: auto;
+    left: 88%;
+    /* Adjusted to match JS logic */
+    width: 20px;
+    background: white;
+    z-index: 5;
+    /* Checkered Flag Pattern */
+    background-image:
+        linear-gradient(45deg, #000 25%, transparent 25%),
+        linear-gradient(-45deg, #000 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #000 75%),
+        linear-gradient(-45deg, transparent 75%, #000 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    /* This checkerboard CSS is tricky, let's simplify */
+    background: repeating-conic-gradient(#000 0% 25%, white 0% 50%) 50% / 20px 20px;
+    border-left: 2px solid white;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.finish-line::before {
+    content: "FINISH";
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff4757;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .header-bar {
@@ -325,12 +408,32 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 5rem;
-    color: white;
-    text-shadow: 4px 4px 0 #000;
+    font-size: 8rem;
+    color: #fff;
+    -webkit-text-stroke: 3px #000;
+    text-shadow:
+        5px 5px 0 #000,
+        10px 10px 0 rgba(0, 0, 0, 0.2);
     pointer-events: none;
     z-index: 100;
     display: none;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+
+    80% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
 
 /* Result Modal */
@@ -340,21 +443,76 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
     background: white;
     padding: 3rem;
-    border-radius: 20px;
+    border-radius: 30px;
     text-align: center;
-    min-width: 400px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    border: 5px solid var(--secondary-color);
+    min-width: 450px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    border: 5px solid var(--primary-color);
+    position: relative;
+    z-index: 1002;
+    animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+#confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1001;
+}
+
+/* Simple Confetti using pseudo elements or expecting JS to populate? 
+   Let's use a simple CSS pattern background for now or assume JS might add them.
+   For now, just a festive background on the container. */
+#confetti-container::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(#ff0000 20%, transparent 20%),
+        radial-gradient(#ffff00 20%, transparent 20%),
+        radial-gradient(#00ff00 20%, transparent 20%),
+        radial-gradient(#0000ff 20%, transparent 20%);
+    background-size: 10px 10px, 15px 15px, 20px 20px, 12px 12px;
+    background-position: 0 0, 40px 40px, 10px 80px, 80px 10px;
+    opacity: 0.6;
+    animation: confettiFall 4s linear infinite;
+}
+
+@keyframes confettiFall {
+    0% {
+        background-position: 0 0, 40px 40px, 10px 80px, 80px 10px;
+    }
+
+    100% {
+        background-position: 0 100px, 40px 140px, 10px 180px, 80px 110px;
+    }
 }
 
 #result-list {

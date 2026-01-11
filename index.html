@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div id="app">
         <!-- 시작 화면: 설정 -->
         <div id="setup-screen" class="screen">
             <h1 class="game-title">🌈 무지개 경마 게임 🐎</h1>
-            
+
             <div class="setup-container">
                 <div class="setting-group">
                     <label>참가할 말 수 (2 ~ 7마리)</label>
@@ -41,20 +43,21 @@
             <div class="header-bar">
                 <button id="btn-reset" class="secondary-btn">처음으로</button>
             </div>
-            
+
             <div class="track-container">
                 <div id="track-lanes">
                     <!-- JS로 트랙 레인 및 말 생성 -->
                 </div>
                 <div class="finish-line"></div>
             </div>
-            
+
             <div id="race-status">준비...</div>
         </div>
     </div>
 
     <!-- 결과 모달 -->
     <div id="result-modal" class="modal hidden">
+        <div id="confetti-container"></div>
         <div class="modal-content">
             <h2>🏆 경기 결과 🏆</h2>
             <ul id="result-list">
@@ -66,4 +69,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>
