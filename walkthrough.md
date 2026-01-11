@@ -16,6 +16,7 @@ This document outlines the features and verification of the Horse Racing Game, s
 
 ### Performance
 - **Race Duration**: Tuned to approx. 120 ticks (18 seconds) for a faster paced game.
+- **End Condition**: Race ends immediately when the first horse crosses the finish line. Remaining horses are ranked by their current position.
 
 ### Visual Effects
 - **Race Screen**:

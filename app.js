@@ -277,8 +277,8 @@ function gameTick() {
         }
     });
 
-    // Check Game Over
-    if (STATE.finishedCount >= STATE.horseCount) {
+    // Check Game Over (End immediately when 1st place finishes)
+    if (STATE.finishedCount >= 1) {
         clearInterval(STATE.timerId);
         STATE.isRacing = false;
 
@@ -295,14 +295,31 @@ function gameTick() {
 function showResults() {
     els.resultList.innerHTML = '';
 
-    // Sort by Rank
-    const rankedHorses = [...STATE.horses].sort((a, b) => a.rank - b.rank);
+    // Sort Logic:
+    // 1. Finished horses (Rank 1, usually just one)
+    // 2. Unfinished horses sorted by position DESC
 
-    rankedHorses.forEach(h => {
+    // Determine ranks for everyone
+    // The finished horse(s) already have rank set (likely 1)
+    // We need to assign ranks to others starting from finishedCount + 1
+
+    const finishedHorses = STATE.horses.filter(h => h.finished).sort((a, b) => a.rank - b.rank);
+    const runningHorses = STATE.horses.filter(h => !h.finished).sort((a, b) => b.position - a.position);
+
+    // Assign ranks to running horses
+    let nextRank = finishedHorses.length + 1;
+    runningHorses.forEach(h => {
+        h.rank = nextRank++;
+    });
+
+    const finalRanking = [...finishedHorses, ...runningHorses];
+
+    finalRanking.forEach(h => {
         const li = document.createElement('li');
         li.innerHTML = `
             <span>${h.rank}위</span>
             <span style="color:${h.color.code}; font-weight:bold;">말 ${h.id + 1}</span>
+            <span style="font-size:0.8rem; color:#888;">(${h.finished ? '골인' : Math.round(h.position) + '%'})</span>
         `;
         els.resultList.appendChild(li);
     });
