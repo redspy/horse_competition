@@ -241,17 +241,11 @@ function gameTick() {
         // 80 / 30 = 2.6% per tick avg.
         // So 1 unit = 2%. Base move = 2% * (1~3) = 2%~6%.
 
-        // Adjusted for 120 ticks target
-        // Goal ~90% distance. 120 ticks -> ~0.73 per tick.
-        // Random 1~5 (avg 3). So base should be ~0.25 to keep similar duration?
-        // User asked for "more dynamic". Faster is okay.
-        // Let's keep base unit similar or slightly lower if it gets too fast.
-        // Old avg: 2 * 0.37 = 0.74
-        // New avg: 3 * 0.37 = 1.11 -> Race ends in ~80 ticks (12 sec).
-        // Let's slightly reduce baseUnit to keep it around 15-18 sec?
-        // 88 / 120 = 0.73. New Avg Step is 3.
-        // 0.73 / 3 = 0.24.
-        const baseUnit = 0.25;
+        // Adjusted for wider track (2% to 96%)
+        // Goal: ~120 ticks.
+        // Distance roughly 94%. 94 / 120 = 0.78 per tick.
+        // Avg step 3. Base needed: 0.78 / 3 = 0.26 -> Let's use 0.3 for a bit faster check.
+        const baseUnit = 0.3;
         const randomStep = Math.floor(Math.random() * 5) + 1; // 1, 2, 3, 4, 5
         let moveAmount = randomStep * baseUnit; // 0.37 ~ 1.11 %
 
@@ -271,7 +265,8 @@ function gameTick() {
         horse.position += moveAmount;
 
         // Render
-        horse.element.style.left = `min(${horse.position}%, calc(100% - 64px))`;
+        // Clamp to prevent going off screen, accounting for wider horse (96px)
+        horse.element.style.left = `min(${horse.position}%, calc(100% - 96px))`;
 
         // Check Finish (Precise Collision Detection)
         const finishLine = document.querySelector('.finish-line');

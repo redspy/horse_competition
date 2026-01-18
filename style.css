@@ -361,13 +361,15 @@ body {
 }
 
 .start-line {
-    left: 80px;
+    left: 2%;
+    /* Move closer to left edge */
     background: rgba(255, 255, 255, 0.8);
 }
 
 .finish-line {
     right: auto;
-    left: 88%;
+    left: 96%;
+    /* Move closer to right edge */
     /* Adjusted to match JS logic */
     width: 20px;
     background: white;
